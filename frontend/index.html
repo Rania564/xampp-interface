@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>IoT Monitor — XAMPP CyberGrid</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="logo">
+    <div class="logo-top">SYS // 002</div>
+    <div class="logo-main">IOT<span>GRID</span></div>
+  </div>
+  <p class="nav-label">// NAV</p>
+  <nav class="nav">
+    <a href="#" class="nav-item active"><span class="nav-icon">▦</span> DASHBOARD</a>
+    <a href="#" class="nav-item"><span class="nav-icon">◎</span> SENSORS</a>
+    <a href="#" class="nav-item"><span class="nav-icon">◷</span> HISTORY</a>
+    <a href="#" class="nav-item"><span class="nav-icon">◈</span> CONFIG</a>
+  </nav>
+  <div class="sidebar-bottom">
+    <div class="db-pill"><span class="db-dot"></span>MySQL / XAMPP</div>
+  </div>
+</aside>
+<main class="main">
+  <header class="topbar">
+    <div>
+      <div class="page-eyebrow">// SENSOR MONITORING SYSTEM</div>
+      <h1 class="page-title">LIVE <span>DASHBOARD</span></h1>
+    </div>
+    <div class="topbar-right">
+      <div class="status-badge">
+        <span class="status-dot" id="statusDot"></span>
+        <span id="statusText">CONNECTING</span>
+      </div>
+      <div class="sys-info">
+        <div class="sys-time" id="clock">--:--:--</div>
+        <div class="sys-date" id="dateDisplay">--- -- ----</div>
+      </div>
+    </div>
+  </header>
+  <p class="section-label">// SENSOR READINGS</p>
+  <section class="cards-grid">
+    <div class="card card--temp">
+      <div class="card-head"><span class="card-id">SN-001 // TEMP</span><span class="card-status ok" id="tempBadge">NORMAL</span></div>
+      <div class="card-sensor">TEMPERATURE</div>
+      <div class="card-value-row"><span class="card-value" id="temp">--</span><span class="card-unit">°C</span></div>
+      <div class="card-bar"><div class="card-bar-fill" id="tempBar" style="width:0%"></div></div>
+    </div>
+    <div class="card card--hum">
+      <div class="card-head"><span class="card-id">SN-002 // HUM</span><span class="card-status ok" id="humBadge">NORMAL</span></div>
+      <div class="card-sensor">HUMIDITY</div>
+      <div class="card-value-row"><span class="card-value" id="humidity">--</span><span class="card-unit">%</span></div>
+      <div class="card-bar"><div class="card-bar-fill" id="humBar" style="width:0%"></div></div>
+    </div>
+    <div class="card card--gas">
+      <div class="card-head"><span class="card-id">SN-003 // GAS</span><span class="card-status ok" id="gasBadge">NORMAL</span></div>
+      <div class="card-sensor">GAS LEVEL</div>
+      <div class="card-value-row"><span class="card-value" id="gas">--</span><span class="card-unit">ppm</span></div>
+      <div class="card-bar"><div class="card-bar-fill" id="gasBar" style="width:0%"></div></div>
+    </div>
+    <div class="card card--motion" id="cardMotion">
+      <div class="card-head"><span class="card-id">SN-004 // PIR</span><span class="card-status ok" id="motionBadge">IDLE</span></div>
+      <div class="card-sensor">MOTION DETECT</div>
+      <div class="card-value-row"><span class="card-value" id="motion">--</span></div>
+      <div class="card-bar" style="background:transparent"></div>
+    </div>
+    <div class="card card--light">
+      <div class="card-head"><span class="card-id">SN-005 // LUX</span><span class="card-status ok" id="lightBadge">NORMAL</span></div>
+      <div class="card-sensor">LIGHT LEVEL</div>
+      <div class="card-value-row"><span class="card-value" id="light">--</span><span class="card-unit">lux</span></div>
+      <div class="card-bar"><div class="card-bar-fill" id="lightBar" style="width:0%"></div></div>
+    </div>
+    <div class="card card--pressure">
+      <div class="card-head"><span class="card-id">SN-006 // ATM</span><span class="card-status ok" id="pressureBadge">NORMAL</span></div>
+      <div class="card-sensor">PRESSURE</div>
+      <div class="card-value-row"><span class="card-value" id="pressure">--</span><span class="card-unit">hPa</span></div>
+      <div class="card-bar"><div class="card-bar-fill" id="pressureBar" style="width:0%"></div></div>
+    </div>
+  </section>
+  <p class="section-label">// DATA STREAM</p>
+  <section class="charts-row">
+    <div class="chart-panel">
+      <div class="chart-panel-title">TEMPERATURE & HUMIDITY — HISTORY</div>
+      <canvas id="tempHumChart" height="130"></canvas>
+    </div>
+    <div class="chart-panel">
+      <div class="chart-panel-title">GAS LEVEL — PPM</div>
+      <canvas id="gasChart" height="130"></canvas>
+    </div>
+  </section>
+  <p class="section-label">// SYSTEM LOG</p>
+  <section class="bottom-row">
+    <div class="panel">
+      <div class="panel-title">MOTION EVENT LOG</div>
+      <div class="motion-log" id="motionLog"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">SENSOR LEVELS</div>
+      <div class="gauges">
+        <div class="gauge-row"><div class="gauge-label"><span class="gauge-name">TEMPERATURE</span><span class="gauge-val" id="gTempVal" style="color:#00ff88">--°C</span></div><div class="gauge-track"><div class="gauge-fill" id="gTemp" style="width:0%;background:#00ff88;box-shadow:0 0 6px #00ff88"></div></div></div>
+        <div class="gauge-row"><div class="gauge-label"><span class="gauge-name">HUMIDITY</span><span class="gauge-val" id="gHumVal" style="color:#00ccff">--%</span></div><div class="gauge-track"><div class="gauge-fill" id="gHum" style="width:0%;background:#00ccff;box-shadow:0 0 6px #00ccff"></div></div></div>
+        <div class="gauge-row"><div class="gauge-label"><span class="gauge-name">GAS LEVEL</span><span class="gauge-val" id="gGasVal" style="color:#ffcc00">-- ppm</span></div><div class="gauge-track"><div class="gauge-fill" id="gGas" style="width:0%;background:#ffcc00;box-shadow:0 0 6px #ffcc00"></div></div></div>
+        <div class="gauge-row"><div class="gauge-label"><span class="gauge-name">LIGHT</span><span class="gauge-val" id="gLightVal" style="color:#00e5cc">-- lux</span></div><div class="gauge-track"><div class="gauge-fill" id="gLight" style="width:0%;background:#00e5cc;box-shadow:0 0 6px #00e5cc"></div></div></div>
+        <div class="gauge-row"><div class="gauge-label"><span class="gauge-name">PRESSURE</span><span class="gauge-val" id="gPressureVal" style="color:#00ff44">-- hPa</span></div><div class="gauge-track"><div class="gauge-fill" id="gPressure" style="width:0%;background:#00ff44;box-shadow:0 0 6px #00ff44"></div></div></div>
+      </div>
+    </div>
+  </section>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
